@@ -27,6 +27,9 @@
     "protractor": "^2.0.0",
     "supertest": "^1.0.1",
     "http-server": "latest",
-    "express": "latest"
+    "express": "latest",
+    "mongoose": "latest",
+    "method-override": "latest",
+    "body-parser": "latest"
   }
 }
