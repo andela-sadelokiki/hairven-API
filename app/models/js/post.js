@@ -1,7 +1,7 @@
 // grab the mongoose module
 var mongoose = require('mongoose');
 
-var Schema = mongoose.Schema()
+var Schema = mongoose.Schema;
 
 var hairStyle = new Schema({
     name: String,
@@ -16,7 +16,7 @@ var hairStyle = new Schema({
         saloonAddress: String
     },
     comments: {
-        user: String commentText: String,
+        user: String, commentText: String,
         date: Date
     },
     meta: {
@@ -24,8 +24,8 @@ var hairStyle = new Schema({
         Dislikes: Number
     }
 
-})
+});
 
 // pass this to other files when modules.export is called.
 module.exports = mongoose.model('hair', hairStyle
-});
+);

@@ -21,14 +21,14 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static('/public/img')); 
 
 // routes ==================================================
-require('./app/routes')(app); // configure our routes
+require('./routes/route')(app); // configure our routes
 
 // start app ===============================================
 // startup our app at http://localhost:8080
 app.listen(port);               
 
 // shoutout to the user                     
-console.log(port + 'up and running');
+console.log(port + ' up and running');
 
 // expose app           
 exports = module.exports = app;                         

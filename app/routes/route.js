@@ -1,7 +1,7 @@
 
 
 // grab the post model
-var post = require('./models/post');
+var post = require('../models/js/post');
 
     module.exports = function(app) {
 
