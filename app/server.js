@@ -32,7 +32,7 @@ require('./routes/router')(app); // configure our routes
 app.listen(port);
 
 // shoutout to the user                     
-console.log(port + ' up and now working');
+console.log(port + ' up and running');
 
 // expose app           
 exports = module.exports = app;

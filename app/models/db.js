@@ -1,5 +1,6 @@
 var Db = require('mongodb').Db;
 var mongoose = require('mongoose');
+var database = require('./database.js')
 
 // grab the mongoose module
 
@@ -56,4 +57,4 @@ db.once('open', function(callback) {
 
 });
 
-mongoose.connect('ds047722.mongolab.com:47722/hairven-u<bisoye>-p<sampledata>');
+mongoose.connect(database.url);
