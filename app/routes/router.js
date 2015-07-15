@@ -1,7 +1,7 @@
 var express = require('express');
 
 // grab the hairstyle model
-var Hair = require('../models/js/db');
+var models = require('../models/db');
 
 module.exports = function(app) {
 
@@ -19,13 +19,13 @@ module.exports = function(app) {
     });
 
     // route to handle creating goes here (app.post)
+
     router.route('/hairstyles')
 
     .post(function(req, res) {
 
-        var hairStyle = new Hair(); 
         // create a new instance of the HairStyle model
-
+        var hairStyle = new models.Hair();
         hairStyle.name = req.body.name;
         hairStyle.image = req.body.img;
         hairStyle.details = req.body.hairDetails;
@@ -39,7 +39,7 @@ module.exports = function(app) {
             Dislikes: req.body.dislikes
         };
         hairStyle.comments = {
-            user: User.username,
+            user: req.body.username,
             commentText: req.body.commentText,
             date: Date.now()
         };
@@ -57,7 +57,7 @@ module.exports = function(app) {
     router.route('/hairstyles')
         .get(function(req, res) {
             // use mongoose to get all hairstyles in the database
-            Hair.find(function(err, hairstyles) {
+            models.Hair.find(function(err, hairstyles) {
 
                 // if there is an error retrieving, send the error. 
 
@@ -74,7 +74,7 @@ module.exports = function(app) {
 
     // get a specific hairstyle details 
     .get(function(req, res) {
-        Hair.findById(req.params.hairstyle_id, function(err, hairstyle) {
+        models.Hair.findById(req.params.hairstyle_id, function(err, hairstyle) {
             if (err)
                 res.send(err);
             res.json(hairstyle);
@@ -87,7 +87,7 @@ module.exports = function(app) {
     .put(function(req, res) {
 
         // use our Hair model to find the hairstyle we want
-        Hair.findById(req.params.hairstyle_id, function(err, hairstyle) {
+        models.Hair.findById(req.params.hairstyle_id, function(err, hairstyle) {
 
             if (err)
                 res.send(err);
@@ -116,7 +116,7 @@ module.exports = function(app) {
         // route to handle delete 
 
     .delete(function(req, res) {
-        Hair.remove({
+        models.Hair.remove({
             _id: req.params.hairstyle_id
         }, function(err, hairstyle) {
             if (err)
@@ -127,6 +127,6 @@ module.exports = function(app) {
     });
 
     //use /api to handle all requests
-    app.use('/', router);
+    app.use('/api', router);
 
 };
