@@ -42,7 +42,7 @@ app.use(passport.session());
 // set the static files location /public/img will be /img for users
 
 // routes ==================================================
-require('./app/routes/routes.js')(app, passport);
+require('./app/routes/users.js')(app, passport);
 
  app.use('/api', router);
 // start app ===============================================
