@@ -28,8 +28,14 @@
     "supertest": "^1.0.1",
     "http-server": "latest",
     "express": "latest",
+    "express-session": "~1.0.0",
+    "bcrypt-nodejs": "latest",
+    "cookie-parser": "~1.0.0",
     "mongoose": "latest",
     "method-override": "latest",
-    "body-parser": "latest"
+    "body-parser": "latest",
+    "morgan": "~1.0.0",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6"
   }
 }
