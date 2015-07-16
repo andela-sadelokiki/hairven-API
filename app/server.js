@@ -1,9 +1,8 @@
 var express = require('express');
+var router = require('./routes/router'); 
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-
-var db = require('./config/db');
 
 var port = process.env.PORT || 8080;
 
@@ -25,8 +24,8 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 // routes ==================================================
 
-require('./routes/router')(app); // configure our routes
-
+// configure our routes
+ app.use('/api', router);
 // start app ===============================================
 // startup our app at http://localhost:8080
 app.listen(port);
