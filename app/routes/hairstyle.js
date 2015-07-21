@@ -5,7 +5,7 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 // grab the hairstyle model
-var Hair = require('../models/db');
+var Hair = require('../models/hairstylemodel');
 
 
 
@@ -58,26 +58,26 @@ var Hair = require('../models/db');
 
     router.put('/:id', function(req, res) {
 
-        // use the Hair model to find the hairstyle we want
+        // use the Hair model to find the hairstyle 
         Hair.findByIdAndUpdate(req.params.id, req.body, function(err, hairstyle) {
 
             if (err)
                 res.send(err);
-            res.json(hairstyle)
+            res.json(hairstyle);
         });
     });
 
     // route to handle delete 
 
     router.delete('/:id', function(req, res) {
-        Hair.FindByIDAnDRemovereq.params.id, req.body,
-            function(err, hairstyle) {
+      
+        Hair.findByIdAndRemove(req.params.id, req.body, function(err, hairstyle) {
 
                 if (err)
                     res.send(err);
-                res, json(hairstyle)
+                res.json(hairstyle);
                 console.log('Hairstyle Successfully deleted');
-            };
+            });
     });
 
 

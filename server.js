@@ -1,5 +1,8 @@
 var express = require('express');
-var router = require('./routes/router'); 
+
+// routes ==================================================
+require('./app/routes/users.js')(app, passport);
+var router = require('./app/routes/hairstyle'); 
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -40,9 +43,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // set the static files location /public/img will be /img for users
-
-// routes ==================================================
-require('./app/routes/users.js')(app, passport);
 
  app.use('/api', router);
 // start app ===============================================
