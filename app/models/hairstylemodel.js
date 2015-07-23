@@ -1,6 +1,6 @@
 var Db = require('mongodb').Db;
 var mongoose = require('mongoose');
-var database = require('./database.js')
+var database = require('./database.js');
 
 // grab the mongoose module
 

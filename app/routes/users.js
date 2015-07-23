@@ -1,45 +1,65 @@
 var passport = require('passport');
-var express = require('express');
 
-var app = express.Router();
+module.exports = function(app, passport) {
 
-// HOME 
-app.get('/', function(req, res) {
-    res.render('index.ejs');
-});
-
-// LOGIN ===========
-app.get('/login', function(req, res) {
-    res.render('login.ejs');
-});
-app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/login'
-}));
-
-// SIGNUP ===========
-app.get('/signup', function(req, res) {
-    res.render('signup.ejs');
-});
-app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/signup'
-}));
-
-// PROFILE SECTION ============
-app.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.ejs', {
-        user: req.user
+    // Index
+    app.get('/', function(req, res) {
+        res.sendFile('/');
     });
-});
 
-// LOGOUT ============
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
+    // Login
+    app.get('/login', function(req, res) {
+        res.sendFile('/login'); 
+    });
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/profile', 
+        failureRedirect : '/login'
+    }));
 
-module.exports = function(app, passport){};
+    // Signup
+    app.get('/signup', function(req, res) {
+        res.sendFile('/signup');
+    });
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/profile', 
+        failureRedirect : '/signup'
+    }));
+
+    // Profile
+    app.get('/profile', isLoggedIn, function(req, res) {
+        res.sendFile('/profile', {
+            user : req.user 
+        });
+    });
+
+    // Facebook 
+    app.get('/auth/facebook', passport.authenticate('facebook', { 
+        scope : 'email' }));
+
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', { 
+        failureRedirect: '/' 
+    }),
+    function(req, res) {
+        res.redirect('/profile');
+    });
+
+     // Google
+    app.get('/auth/google', passport.authenticate('google', { 
+        scope : ['profile', 'email'] }));
+
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+                    successRedirect : '/profile',
+                    failureRedirect : '/'
+            }));
+
+     // Logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+    
+};
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
