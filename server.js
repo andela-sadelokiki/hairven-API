@@ -1,18 +1,24 @@
+var passport = require('passport');
 var express = require('express');
+var app = express();
+var port = process.env.PORT || 8080;
 
 // routes ==================================================
-require('./app/routes/users.js')(app, passport);
 var router = require('./app/routes/hairstyle'); 
-var app = express();
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
 
+var methodOverride = require('method-override');
+var mongoose = require('mongoose');
 var passport = require('passport');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
-var session      = require('express-session');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var database = require('./app/models/database.js');
 
-var port = process.env.PORT || 8080;
+mongoose.connect(database.url);
+
+require('./app/routes/users.js')(app, passport);
+
 
 app.use(bodyParser.json());
 
@@ -31,11 +37,11 @@ require('./config/passport')(passport); // pass passport for configuration
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 // set up our express application
-app.use(morgan('dev')); // log every request to the console
+app.use(morgan('dev'));
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-app.set('view engine', 'ejs'); // set up ejs for templating
+// app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({ secret: 'i' })); // session secret

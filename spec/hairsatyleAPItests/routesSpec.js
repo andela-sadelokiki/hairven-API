@@ -1,16 +1,15 @@
 'use strict';
 
-describe("hairstyle routes API", function() {
+describe("hairstyle API routes", function() {
 
-    var Db = require('mongodb'), mongoose = require('mongoose'),  db= mongoose.connection;
-     var hairStyle = new mongoose.Schema({});
+    var express = require('express'), router = express.Router();
+    var Hair = require('../models/hairstylemodel');
     it("should contain required dependencies", function() {
       
 
-     expect(Db).toBeDefined(); 
-     expect(mongoose).toBeDefined();
-     expect(db).toBeDefined();      
-
+     expect(express).toBeDefined(); 
+     expect(router).toEqual(express.Router());
+     expect(Hair).toBeDefined();      
   });
 
     it("should contain schema declaration", function() {
