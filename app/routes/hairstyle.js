@@ -1,18 +1,10 @@
 var express = require('express');
-var multer = require('multer')
-var cloudinary = require('cloudinary');
-var fs = require('fs');
 // server routes ===========================================================
 var router = express.Router();
 
-var upload = multer({dest:'uploads/'});
-
-var cpUpload = upload.single('postImg');
-
 var mongoose = require('mongoose');
-// grab the hairstyle model
+// grab the hairstyle and photo model
 var Hair = require('../models/hairstylemodel');
-
 
 
 // middleware to use for all requests
@@ -35,42 +27,11 @@ router.post('/', function(req, res) {
         console.log('hairstyle details saved!');
     });
 
-    //post image to cloudinary
-    /*fs.readFile(req.file.image.path, function(err, data) {
-        // ...
-        var newPath = __dirname + "/uploads/uploadedFileName";
-        fs.writeFile(newPath, data, function(err) {
-            res.redirect("/");
-        });
-    });
-    var imageStream = fs.createReadStream(res.files.image.newPath, {
-            encoding: 'binary'
-        }),
-        cloudStream = cloudinary.uploader.upload_stream(function() {
-            res.redirect('/');
-        });
-
-    imageStream.on('data', cloudStream.write).on('end', cloudStream.end);*/
 });
-
-router.post('/', function(req, res){
-    console.log(req.body) // form fields
-    //console.log(req.files) // form files
-    res.status(204).end()
-});
-
 
 //get hairstyles in database
 router.get('/', function(req, res) {
 
-    //get hairstyle Images
-    cloudinary.api.resources(function(items) {
-        res.sendFile('/', {
-            images: items.resources,
-            title: 'HairStyles',
-            cloudinary: cloudinary
-        });
-    });
     // use mongoose to get all hairstyles in the database
     Hair.find(function(err, hairstyles) {
 

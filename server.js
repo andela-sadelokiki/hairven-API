@@ -4,13 +4,17 @@ var port = process.env.PORT || 8080;
 
 // routes ==================================================
 var router = require('./app/routes/hairstyle');
+var photoRoute = require('./app/routes/photoroute');
 
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var morgan = require('morgan');
+var multer = require('multer');
+
 var cloudinary = require('cloudinary'),
     fs = require('fs');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -53,8 +57,8 @@ cloudinary.config({
 app.use(session({
     secret: 'i',
     resave: false,
-    saveUinitialized: true
-})); 
+    saveUninitialized: true
+}));
 
 // session secret
 app.use(passport.initialize());

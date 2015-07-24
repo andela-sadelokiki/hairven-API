@@ -16,10 +16,6 @@ db.once('open', function(callback) {
 
 var hairStyle = new mongoose.Schema({
     name: String,
-    image: {
-        data: Buffer,
-        contentType: String
-    },
     details: String,
     date: {
         type: Date,
@@ -41,7 +37,19 @@ var hairStyle = new mongoose.Schema({
 
 });
 
-// The models for Hairstyles.
+var hairImage = new mongoose.Schema({
+
+    title: {
+        type: String,
+        size: 255
+    },
+    image: {
+        type: JSON
+    }
+
+});
+// The models for Hairstyles and Photo.
 module.exports = mongoose.model('Hair', hairStyle);
+module.exports = mongoose.model('Photo', hairImage);
 
 mongoose.connect(database.url);
