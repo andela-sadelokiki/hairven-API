@@ -12,12 +12,14 @@ db.once('open', function(callback) {
 
 });
 
-
 //schema for hairstyles
 
 var hairStyle = new mongoose.Schema({
     name: String,
-    image: String,
+    image: {
+        data: Buffer,
+        contentType: String
+    },
     details: String,
     date: {
         type: Date,
