@@ -1,0 +1,12 @@
+<html ng-app="testApp">
+<head>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+<script type="text/javascript" src="bower_components/es5-shim/es5-shim.js"></script>
+<script type="text/javascript" src="testcontroller.js"></script>
+</head>
+<body ng-controller="mainController">
+<input type="file" file-model="photo">
+<button type="submit" ng-click="uploadFile()"> upload</button>
+</body>
+</html>

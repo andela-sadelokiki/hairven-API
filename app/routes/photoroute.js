@@ -13,7 +13,14 @@ var Photo = require('../models/hairstylemodel');
 var upload = multer({dest: './uploads/'});
 var phUpload = upload.single('hairPhoto');
 
-photoRoute.post('/profile', function (req, res) {
+photoRoute.use(function(req, res, next) {
+    // do logging
+    console.log('photoRoute is working also.');
+    //  go to the next routes and don't stop here
+    next();
+});
+
+photoRoute.post('/uploads', function (req, res) {
   phUpload(req, res, function (err) {
     if (err) {
       // An error occurred when uploading
@@ -41,20 +48,20 @@ module.exports = {
     }
 };
 
-photoRoute.post('/uploads', function(req, res) {
+/*photoRoute.post('/uploads', function(req, res) {
     var newPhoto = fs.createReadStream(req.file, {
             encoding: 'binary'
         }),
         stream = cloudinary.uploader.upload_stream(function() {
-            res.redirect('/');
+            res.redirect('../../index');
         });
 
     imageStream.on('data', cloudStream.write).on('end', cloudStream.end);
 });
-
+*/
 photoRoute.get('/', function(req, res, next) {
     cloudinary.api.resources(function(items) {
-        res.senfFile('/', {
+        res.senfFile('../../index', {
             images: items.resources,
             cloudinary: cloudinary
         });
