@@ -13,7 +13,7 @@ var morgan = require('morgan');
 var multer = require('multer');
 
 var cloudinary = require('cloudinary'),
-    fs = require('fs');
+  fs = require('fs');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -28,12 +28,12 @@ require('./app/routes/users.js')(app, passport);
 app.use(bodyParser.json());
 
 app.use(bodyParser.json({
-    type: 'application/vnd.api+json'
+  type: 'application/vnd.api+json'
 }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 
 require('./config/passport')(passport); // pass passport for configuration
@@ -45,30 +45,21 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(morgan('dev'));
 app.use(cookieParser()); // read cookies (needed for auth)
 
-
-//cloudinary API details for Image upload.    
-cloudinary.config({
-    cloud_name: 'dabdvstcm',
-    api_key: '698755435318455',
-    api_secret: 'u8rgw6cy82gs6beY6Bo8EZvmJHs'
-});
-
 // required for passport
 app.use(session({
-    secret: 'i',
-    resave: false,
-    saveUninitialized: true
+  secret: 'i',
+  resave: false,
+  saveUninitialized: true
 }));
 
 // session secret
 app.use(passport.initialize());
 app.use(passport.session());
 
-// set the static files location /public/img will be /img for users
-
-app.use('/api', router, photoRoute);
+app.use('/api', router);
+app.use('/', photoRoute);
 // start app ===============================================
-// startup our app at http://localhost:8080
+// startup app at http://localhost:8080
 app.listen(port);
 
 // shoutout to the user                     

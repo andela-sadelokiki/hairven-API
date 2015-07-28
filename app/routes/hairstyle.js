@@ -28,7 +28,6 @@ router.post('/', function(req, res) {
     });
 
 });
-
 //get hairstyles in database
 router.get('/', function(req, res) {
 

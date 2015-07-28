@@ -5,67 +5,57 @@ var fs = require('fs');
 // server routes ===========================================================
 var photoRoute = express.Router();
 
-var mongoose = require('mongoose');
-// grab the hairstyle and photo model
-var Photo = require('../models/hairstylemodel');
 
 // multer directory for photo saving
-var upload = multer({dest: './uploads/'});
+var upload = multer({
+  dest: './uploads/'
+});
+
 var phUpload = upload.single('hairPhoto');
 
+//cloudinary API details for Image upload.    
+cloudinary.config({
+  cloud_name: 'dabdvstcm',
+  api_key: '698755435318455',
+  api_secret: 'u8rgw6cy82gs6beY6Bo8EZvmJHs'
+});
+
+
 photoRoute.use(function(req, res, next) {
-    // do logging
-    console.log('photoRoute is working also.');
-    //  go to the next routes and don't stop here
-    next();
+  // do logging
+  console.log('photoRoute is working.');
+  //  go to the next routes and don't stop here
+  next();
 });
 
-photoRoute.post('/uploads', function (req, res) {
-  phUpload(req, res, function (err) {
-    if (err) {
-      // An error occurred when uploading
-      return (err);
-    }
-    	console.log("photo uploaded");
-  });
-});
-
-module.exports = {
-
-    uploadImage: function(req, res, next) {
-        if (req.file) {
-            cloudinary.uploader.upload(req.file.path, function(result) {
-                if (result.url) {
-                    req.imageLink = result.url;
-                    next();
-                } else {
-                    res.json(error);
-                }
-            });
+photoRoute.post('/', function(req, res) {
+  phUpload(req, res, function(err) {
+    if (req.file) {
+      cloudinary.uploader.upload(req.file.path, function(result) {
+        if (result.url) {
+          req.imageLink = result.url;
+          next();
         } else {
-            next();
+          res.json(error);
         }
+      });
+    } else {
+      next();
     }
-};
-
-/*photoRoute.post('/uploads', function(req, res) {
-    var newPhoto = fs.createReadStream(req.file, {
-            encoding: 'binary'
-        }),
-        stream = cloudinary.uploader.upload_stream(function() {
-            res.redirect('../../index');
-        });
-
-    imageStream.on('data', cloudStream.write).on('end', cloudStream.end);
+  });
+  console.log("photo uploaded");
 });
-*/
+
+
 photoRoute.get('/', function(req, res, next) {
-    cloudinary.api.resources(function(items) {
-        res.senfFile('../../index', {
-            images: items.resources,
-            cloudinary: cloudinary
-        });
+  cloudinary.api.resources(function(items) {
+    res.sendFile('index.html', {
+      "root": './view'
+    }, {
+      images: items.resources,
+      cloudinary: cloudinary
     });
+  });
 });
 
 module.exports = photoRoute;
