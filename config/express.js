@@ -1,10 +1,12 @@
 var dotenv = require('dotenv');
 dotenv.load();
 var cloudinary = require('cloudinary');
-if (typeof(process.env.CLOUDINARY_URL)=='undefined'){
+
+//check to ensure .env passes cloudinary details
+if (typeof(process.env.CLOUDINARY_URL) == 'undefined') {
   console.warn('!! cloudinary config is undefined !!');
   console.warn('export CLOUDINARY_URL or set dotenv file');
-}else{
+} else {
   console.log('cloudinary config:');
   console.log(cloudinary.config());
 }
@@ -21,17 +23,22 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var morgan = require('morgan');
 var multer = require('multer');
+var multer = require('multer');
+var path = require('path');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var database = require('../app/models/database.js');
 
-//mongoose.connect(database.url);
-
 //require('../app/routes/users.routes.js')(app, passport);
 
+//multer for getting a uploaded a hairstyle photo
+app.use(multer({
+  dest: './uploads/'
+}).single('hairPhoto'));
 
+//parse body contents as a JSON objects
 app.use(bodyParser.json());
 
 app.use(bodyParser.json({
@@ -63,6 +70,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//route trough api
 app.use('/api', router);
 
 exports = module.exports = app;

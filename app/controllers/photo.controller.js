@@ -1,68 +1,32 @@
 var express = require('express');
-var multer = require('multer');
 var cloudinary = require('cloudinary');
 var fs = require('fs');
 
 // grab the hairstyle and photo model
-var hairImage = require('../models/hairstylemodel');
-// multer directory for photo saving
-var upload = multer({
-  dest: './uploads/'
-});
+var Hair = require('../models/hairstylemodel');
 
-
-function addNewPhoto(req, res) {
-  // Create a new photo model and set it's default title
-  var photo = new hairImage();
-  hairImage.count().then(function(amount) {
-      photo.title = "Hairstyle #" + (amount + 1);
-    })
-    .finally(function() {
-      res.sendFile('/', {
-        photo: photo
-      });
-    });
-}
 
 module.exports = {
 
   postPhoto: function(req, res, next) {
-    addNewPhoto();
-    if (req.file) {
 
-      var photo = new hairImage(req.file);
+    if (req.file) {
+      var photo = new Hair();
       // Get temp file path 
       var imageFile = req.file.path;
 
+      //upload file to the cloudinary web-server
       cloudinary.uploader.upload(imageFile, {
           tags: 'Hairstyle Photos'
-        })
-        .then(function(file) {
+        }, function(response) {
           console.log('photo uploaded to Cloudinary service');
-          console.dir(file);
-          photo.image = file;
+          console.dir(response);
+          photo.image = response.url;
+
           // Save photo with image metadata
           return photo.save();
-        })
-        .then(function(photo) {
-          console.log(' photo saved');
         });
     }
   },
 
-
-  getPhoto: function(req, res, next) {
-    cloudinary.api.resources(function(items) {
-      res.sendFile('index.html', {
-        "root": './view'
-      }, {
-        images: items.resources,
-        title: 'HairStyles',
-        cloudinary: cloudinary
-      });
-      if (err) {
-        return err;
-      }
-    });
-  }
 };

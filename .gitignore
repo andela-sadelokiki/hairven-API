@@ -3,4 +3,5 @@ tmp
 !.gitkeep
 npm-debug.log
 .idea
-node_modules
+node_modules/
+.env

@@ -12,11 +12,13 @@ router.use(function(req, res, next) {
     next();
 });
 
-router.route('/')
-.post(hairDetails.newHairStyle, hairImage.postPhoto)
-.get(hairDetails.getAllHairStyles, hairImage.getPhoto);
+//requests on all data
+router.route('/hairstyle/')
+.post(hairImage.postPhoto, hairDetails.newHairStyle)
+.get(hairDetails.getAllHairStyles);
 
-router.route('/:hairstyle.name')
+//request on specific data
+router.route('/hairstyle/:id')
 .get(hairDetails.getByName)
 .put(hairDetails.updateHairStyle)
 .delete(hairDetails.removeHairStyle);

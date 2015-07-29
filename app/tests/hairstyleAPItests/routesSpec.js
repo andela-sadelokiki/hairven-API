@@ -17,6 +17,8 @@ describe("hairstyle API routes", function() {
     });
 
     it("should post successfully", function(done) {
+      
+      //demo hairModel to test
       var newHairstyle = {
         name: 'sampleHair',
         date: Date.now(),
@@ -36,9 +38,11 @@ describe("hairstyle API routes", function() {
         }
       };
       request(app)
-        .post('/api')
+        .post('/api/hairstyle/')
         .set('Accept', 'application/json')
         .send(newHairstyle)
+        .field('hairPhoto', 'hairImage')
+        .attach('hairPhoto', 'hair_henna.jpg')
         .expect({
           success: true
         }, 200)
@@ -79,7 +83,7 @@ describe("hairstyle API routes", function() {
     it("should get successfully ", function(done) {
 
       request(app)
-        .get('/api')
+        .get('/api/hairstyle')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect({
@@ -104,7 +108,7 @@ describe("hairstyle API routes", function() {
     });
   });
 
-  describe("POST /", function() {
+  describe("Requests on specific Hairstyles", function() {
 
     beforeEach(function(done) {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -114,43 +118,16 @@ describe("hairstyle API routes", function() {
       }, 500);
     });
 
-    it("should post hairstyle photos successfully", function(done) {
-      request(app)
-        .post('/')
-        .field('hairPhoto', 'hairPhoto')
-        .attach('hairPhoto', 'meme1.jpg')
-        .set('Accept', 'application/json')
-        .expect({
-          success: true
-        }, 200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          done()
-        });
-
-      done();
-    });
-
-  });
-
-  describe("GET /", function() {
-
-    beforeEach(function(done) {
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-      setTimeout(function() {
-        console.log('inside timeout');
-        done();
-      }, 500);
-    });
-
-    it("should get hairstyle photos successfully ", function(done) {
+    it("should get hairsyle by name succesfully successfully ", function(done) {
 
       request(app)
-        .get('/')
+        .get('/api/hairstyle/:id')
+        .expect(200)
+        .expect('Content-Type', /json/)
         .expect({
-          success: true
-        }, 200)
-        .expect('Content-Type', /jpg/)
+          name: 'sampleHair',
+          details: 'test hair posting'
+        })
         .end(function(err, res) {
           if (err) return done(err);
           done()
@@ -158,5 +135,39 @@ describe("hairstyle API routes", function() {
       done();
     });
 
+    it("should update Hairstyle details", function(done) {
+
+      var newHairstyle = {
+        date: Date.now(),
+        details: 'new Hair details'
+      }
+
+      request(app)
+        .put('/api/hairstyle/:id')
+        .expect(200)
+        .send(newHairstyle.details, newHairstyle.date)
+        .expect({
+          success: true
+        })
+        .end(function(err, res) {
+          if (err) return done(err);
+          done()
+        });
+      done();
+    });
+
+    it("should remove Hairstyle details", function(done) {
+      request(app)
+        .delete('/api/hairstyle/:id')
+        .expect(200)
+        .expect({
+          success: true
+        })
+        .end(function(err, res) {
+          if (err) return done(err);
+          done()
+        });
+    });
   });
+
 });

@@ -15,35 +15,43 @@ db.once('open', function(callback) {
 //schema for hairstyles
 
 var hairStyle = new mongoose.Schema({
-  name: String,
-  details: String,
+  name: {
+    type: String,
+    unique: true,
+    require: true,
+    required: 'Please enter a HairStyle name'
+  },
+  details: {
+    type: String
+  },
+  image: {
+    type: String,
+    require: true
+
+  },
   date: {
     type: Date,
-    default: Date.now()
+    default: Date.now('dd/mm/yyyy')
   },
   saloonList: {
-    saloonName: String,
-    saloonAddress: String
+    saloonName: {
+      type: String,
+      require: true,
+      required: "Enter your saloon's name"
+    },
+    saloonAddress: {
+      type: String
+    }
   },
   meta: {
     Likes: Number,
     Dislikes: Number
   },
-  comments: {
-    user: String,
-    commentText: String,
-    date: Date
-  }
 
 });
 
-var hairPhoto = new mongoose.Schema({
-  title      : { type : String, length   : 255 },
-  image      : { type : JSON}
-});
 
-// The models for Hairstyles and Photo.
+// The models for Hairstyles.
 module.exports = mongoose.model('Hair', hairStyle);
-module.exports = mongoose.model('hairImage', hairPhoto);
 
 mongoose.connect(database.url);

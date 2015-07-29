@@ -1,6 +1,7 @@
 'use strict';
 
 var Hairstyle = require('../../app/models/hairstylemodel');
+
 describe("hairstyle Schema", function() {
 
   it("should create a hairstyle model", function() {

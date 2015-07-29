@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
+
 // grab the hairstyle and photo model
 var Hair = require('../models/hairstylemodel');
 
-// middleware to use for all requests
 
 
 
-// route to handle creating
 
 module.exports = {
 
+    //function for creation of hairstyle
   newHairStyle: function(req, res) {
 
     // create a new instance of the HairStyle model
@@ -34,7 +34,7 @@ module.exports = {
     });
   },
 
-
+  //get a specific hairstyle
   getByName: function(req, res) {
     Hair.findById(req.params.id, function(err, hairstyle) {
       if (err)
@@ -44,7 +44,6 @@ module.exports = {
   },
 
   //edit details of a haistyle
-
   updateHairStyle: function(req, res) {
 
     // use the Hair model to find the hairstyle 
@@ -56,8 +55,7 @@ module.exports = {
     });
   },
 
-  // route to handle delete 
-
+  // remove a hairstyle 
   removeHairStyle: function(req, res) {
 
     Hair.findByIdAndRemove(req.params.id, req.body, function(err, hairstyle) {
