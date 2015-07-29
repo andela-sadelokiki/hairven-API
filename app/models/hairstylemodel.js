@@ -37,7 +37,13 @@ var hairStyle = new mongoose.Schema({
 
 });
 
+var hairPhoto = new mongoose.Schema({
+  title      : { type : String, length   : 255 },
+  image      : { type : JSON}
+});
+
 // The models for Hairstyles and Photo.
 module.exports = mongoose.model('Hair', hairStyle);
+module.exports = mongoose.model('hairImage', hairPhoto);
 
 mongoose.connect(database.url);
