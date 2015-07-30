@@ -32,10 +32,20 @@ var session = require('express-session');
 var database = require('../app/models/database.js');
 
 //require('../app/routes/users.routes.js')(app, passport);
+mongoose.connect(database.url);
 
-//multer for getting a uploaded a hairstyle photo
+//multer properties for saving into file with an assigned name. 
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now());
+  }
+});
+
 app.use(multer({
-  dest: './uploads/'
+  storage: storage
 }).single('hairPhoto'));
 
 //parse body contents as a JSON objects

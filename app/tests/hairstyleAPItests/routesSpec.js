@@ -38,7 +38,7 @@ describe("hairstyle API routes", function() {
         }
       };
       request(app)
-        .post('/api/hairstyle/')
+        .post('/api/hairstyle')
         .set('Accept', 'application/json')
         .send(newHairstyle)
         .field('hairPhoto', 'hairImage')
@@ -56,7 +56,7 @@ describe("hairstyle API routes", function() {
     it("should post hairstyle details as a JSON object", function(done) {
 
       request({
-        url: 'http://locahost:8080/api',
+        url: 'http://locahost:8080/api/hairstyle',
         method: 'POST'
       }, function(error, response, body) {
         if (error) {
@@ -99,7 +99,7 @@ describe("hairstyle API routes", function() {
 
     it("should return hairstyle details as a JSON object", function(done) {
 
-      request('http://locahost:8080/api', function(error, response, body) {
+      request('http://locahost:8080/api/hairstyle', function(error, response, body) {
         expect(typeof response).toEqual(typeof JSON);
         console.log(response);
 
@@ -121,7 +121,7 @@ describe("hairstyle API routes", function() {
     it("should get hairsyle by name succesfully successfully ", function(done) {
 
       request(app)
-        .get('/api/hairstyle/:id')
+        .get('/api/hairstyle/sampleHair')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect({
@@ -143,7 +143,7 @@ describe("hairstyle API routes", function() {
       }
 
       request(app)
-        .put('/api/hairstyle/:id')
+        .put('/api/hairstyle/sampleHair')
         .expect(200)
         .send(newHairstyle.details, newHairstyle.date)
         .expect({
@@ -156,9 +156,9 @@ describe("hairstyle API routes", function() {
       done();
     });
 
-    it("should remove Hairstyle details", function(done) {
+  it("should remove Hairstyle details", function(done) {
       request(app)
-        .delete('/api/hairstyle/:id')
+        .delete('/api/hairstyle/sampleHair')
         .expect(200)
         .expect({
           success: true

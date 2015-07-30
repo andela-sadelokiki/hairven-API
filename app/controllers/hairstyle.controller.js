@@ -1,24 +1,43 @@
 var mongoose = require('mongoose');
 
+var cloudinary = require('cloudinary');
+var fs = require('fs');
+
 // grab the hairstyle and photo model
 var Hair = require('../models/hairstylemodel');
 
 
-
-
-
 module.exports = {
 
-    //function for creation of hairstyle
-  newHairStyle: function(req, res) {
+  //function for creation of hairstyle
+  createHairStyle: function(req, res) {
+    var photo = null;
+    if (req.file) {
+      // Get temp file path 
+      var imageFile = req.file.path;
 
-    // create a new instance of the HairStyle model
-    Hair.create(req.body, function(err) {
-      if (err)
-        res.send(err);
-      console.log('hairstyle details saved!');
-    });
-
+      //upload file to the cloudinary web-server
+      cloudinary.uploader.upload(imageFile, function(response) {
+        console.log('photo uploaded to Cloudinary service');
+        console.dir(response);
+        photo = response.url;
+    
+      // create a new instance of the HairStyle model
+      var newHair = req.body;
+      var hairStyle = new Hair(newHair);
+      hairStyle.image = response.url;
+      console.log(hairStyle.image);
+      hairStyle.save(function(err, response) {
+        if (err) {
+          res.send(err);
+        } else {
+          console.log('hairstyle details saved!');
+        }
+      });
+    }, {
+        use_filename: true
+      });
+    }
   },
 
   //get hairstyles in database
@@ -36,7 +55,9 @@ module.exports = {
 
   //get a specific hairstyle
   getByName: function(req, res) {
-    Hair.findById(req.params.id, function(err, hairstyle) {
+    Hair.find({
+      name: req.params.name
+    }, function(err, hairstyle) {
       if (err)
         res.send(err);
       res.json(hairstyle);
@@ -47,7 +68,9 @@ module.exports = {
   updateHairStyle: function(req, res) {
 
     // use the Hair model to find the hairstyle 
-    Hair.findByIdAndUpdate(req.params.id, req.body, function(err, hairstyle) {
+    Hair.update({
+      name: req.params.name
+    }, req.body, function(err, hairstyle) {
 
       if (err)
         res.send(err);
@@ -58,7 +81,9 @@ module.exports = {
   // remove a hairstyle 
   removeHairStyle: function(req, res) {
 
-    Hair.findByIdAndRemove(req.params.id, req.body, function(err, hairstyle) {
+    Hair.find({
+      name: req.params.name
+    }, req.body).remove(function(err, hairstyle) {
 
       if (err)
         res.send(err);

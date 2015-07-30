@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var hairDetails = require('../controllers/hairstyle.controller');
-var hairImage = require('../controllers/photo.controller');
+//var hairImage = require('../controllers/photo.controller');
 
 router.use(function(req, res, next) {
     // do logging
@@ -13,12 +13,12 @@ router.use(function(req, res, next) {
 });
 
 //requests on all data
-router.route('/hairstyle/')
-.post(hairImage.postPhoto, hairDetails.newHairStyle)
+router.route('/hairstyle')
+.post(hairDetails.createHairStyle)
 .get(hairDetails.getAllHairStyles);
 
 //request on specific data
-router.route('/hairstyle/:id')
+router.route('/hairstyle/:name')
 .get(hairDetails.getByName)
 .put(hairDetails.updateHairStyle)
 .delete(hairDetails.removeHairStyle);

@@ -53,5 +53,3 @@ var hairStyle = new mongoose.Schema({
 
 // The models for Hairstyles.
 module.exports = mongoose.model('Hair', hairStyle);
-
-mongoose.connect(database.url);

@@ -16,15 +16,15 @@ module.exports = {
       var imageFile = req.file.path;
 
       //upload file to the cloudinary web-server
-      cloudinary.uploader.upload(imageFile, {
-          tags: 'Hairstyle Photos'
-        }, function(response) {
+      cloudinary.uploader.upload(imageFile, function(response) {
           console.log('photo uploaded to Cloudinary service');
           console.dir(response);
           photo.image = response.url;
 
           // Save photo with image metadata
           return photo.save();
+        },{
+        use_filename: true
         });
     }
   },
